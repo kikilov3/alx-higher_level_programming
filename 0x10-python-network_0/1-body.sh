@@ -1,3 +1,7 @@
 #!/bin/bash
-# Get the response body for a given URL for 200 status code responses.
-curl -sL "$1"
+response=$(curl -sw '%{http_code}' "$1")
+status="${response:${#response}-3}"
+if [ "$status" -eq 200 ]; then
+  body=$(curl -s "$1")
+  echo "$body"
+fi
